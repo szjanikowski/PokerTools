@@ -47,21 +47,14 @@ HandReplay.Cards = {
 
         this.draw = function(x, y) {
             var details = this.parseCardName(name);
-            var fontcolor = (details.suit === 's' || details.suit === 'c') ? "Black" : "Red";
+            var fontcolour = (details.suit === 's' || details.suit === 'c') ? 'Black' : 'Red';
 
             ctx.clearRect(x, y, x + width, y + height);
 
-            ctx.shadowOffsetX = 1;
-            ctx.shadowOffsetY = 1;
-            ctx.shadowBlur = 1;
-            ctx.shadowColor = "#000";
-
-            helpers.drawRoundedRectangle(x, y, width, height, radius);
-
+            helpers.drawShadow(1, 1, 1, '#000');
+            helpers.drawRoundedRectangle(x, y, width, height, radius, '#000', 1, '#fff');
             // shadow reset
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.shadowBlur = 0;
+            helpers.drawShadow(0, 0, 0, '#000');
 
             ctx.beginPath();
             ctx.moveTo(x + width, y + height/4);
@@ -69,26 +62,9 @@ HandReplay.Cards = {
             ctx.lineTo(x + width/3, y + height);
             ctx.stroke();
 
-            ctx.beginPath();
-            ctx.font = font;
-            ctx.textBaseline = "middle";
-            ctx.textAlign = "center";
-            ctx.fillStyle = fontcolor;
-            ctx.fillText(details.label, x + width/6, y + height/8);
-
-            ctx.beginPath();
-            ctx.font = font;
-            ctx.textBaseline = "middle";
-            ctx.textAlign = "center";
-            ctx.fillStyle = fontcolor;
-            ctx.fillText(suits[details.suit], x + width/6, y + height/3);
-
-            ctx.beginPath();
-            ctx.textBaseline = "middle";
-            ctx.textAlign = "center";
-            ctx.font = shapefont;
-            ctx.fillStyle = fontcolor;
-            ctx.fillText(suits[details.suit], width - width/3 + x, height - height/2.5 + y);
+            helpers.drawText(x + width/6, y + height/8, details.label, font, fontcolour, 'middle', 'center');
+            helpers.drawText(x + width/6, y + height/3, suits[details.suit], font, fontcolour, 'middle', 'center');
+            helpers.drawText(width - width/3 + x, height - height/2.5 + y, suits[details.suit], shapefont, fontcolour, 'middle', 'center');
         }
 
         this.parseCardName = function(name) {

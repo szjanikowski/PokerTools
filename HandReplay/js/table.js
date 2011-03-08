@@ -25,16 +25,27 @@ HandReplay.Table =  {
 
     init : function() {
         this.draw();
+        this.drawSeats();
     },
 
     draw : function() {
-        var ctx = HandReplay.Facade.data.context;
-        var helpers = HandReplay.CanvasHelpers;
+        var ctx = HandReplay.Facade.data.context,
+        canvasW = HandReplay.Facade.data.canvasW,
+        canvasH = HandReplay.Facade.data.canvasH,
+        helpers = HandReplay.CanvasHelpers;
 
-        helpers.drawRoundedRectangle(150, 150, 500, 200, 70);
-        
+        helpers.drawOval(canvasW/2, canvasH/2, 650, 350, 'rgba(47, 47, 46, 1)', 20, 'rgba(70, 99, 13, 0.8)');
+
         HandReplay.Cards.create("Ad", 5, 5);
 
+
+    },
+
+    seats : function(amount) {
+
+    },
+
+    drawSeats : function() {
 
     }
 };

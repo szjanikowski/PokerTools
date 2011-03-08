@@ -23,13 +23,21 @@
 
 HandReplay.CanvasHelpers = {
 
-    drawRoundedRectangle : function(x, y, width, height, radius, fill) {
+    /**
+     * Draws a rounded corner rectangle.
+     *
+     * @param int x             horizontal position on canvas
+     * @param int y             vertical position on canvas
+     * @param int width         rectangle width
+     * @param int height        rectangle height
+     * @param int radius        rounded corner radius size
+     * @param string stroke     optional stroke colour (has or rgba); canvas spec default
+     * @param int strokesize    optional stroke size
+     * @param string fill       optional fill colour (hash or rgba); fill will not be applied if undefined
+     */
+    drawRoundedRectangle : function(x, y, width, height, radius, stroke, strokesize, fill) {
         var ctx = HandReplay.Facade.data.context;
-
-        if (typeof fill === 'undefined') {
-            fill = true;
-        }
-
+        
         ctx.beginPath();
         ctx.moveTo(x + radius, y);
         ctx.lineTo(x + width - radius, y);
@@ -40,11 +48,91 @@ HandReplay.CanvasHelpers = {
         ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
         ctx.lineTo(x, y + radius);
         ctx.quadraticCurveTo(x, y, x + radius, y);
+
+        if (typeof strokesize !== 'undefined') {
+            ctx.lineWidth = strokesize;
+        }
+
+        if (typeof stroke !== 'undefined') {
+            ctx.strokeStyle = stroke;
+        }
         ctx.stroke();
 
-        if (true === fill) {
-            ctx.fillStyle = "#fff";
+        if (typeof fill !== 'undefined') {
+            ctx.fillStyle = fill;
             ctx.fill();
         }
+    },
+
+    /**
+     * Draw an oval shape
+     * @param int cx            oval centre horizontal coordinate
+     * @param int cy            oval centre vertical coordinate
+     * @param int width         shape width
+     * @param int height        shape height
+     * @param string stroke     optional stroke style (rgba or hash)
+     * @param int strokesize    optional stroke size
+     * @param string fill       optional fill style (rgba or hash); fill will not be applied if undefined
+     */
+    drawOval : function(cx, cy, width, height, stroke, strokesize, fill) {
+        var ctx = HandReplay.Facade.data.context;
+        var rectW = width * 1.33;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - height/2);
+        ctx.bezierCurveTo(cx - rectW/2, cy - height/2, cx - rectW/2, cy + height/2, cx, cy + height/2);
+        ctx.bezierCurveTo(cx + rectW/2, cy + height/2, cx + rectW/2, cy - height/2, cx, cy - height/2);
+
+        if (typeof strokesize !== 'undefined') {
+            ctx.lineWidth = strokesize;
+        }
+
+        if (typeof stroke !== 'undefined') {
+            ctx.strokeStyle = stroke;
+        }
+        ctx.stroke();
+
+        if (typeof fill !== 'undefined') {
+            ctx.fillStyle = fill;
+            ctx.fill();
+        }
+    },
+
+    /**
+     * Draw a text shape
+     *
+     * @param int x                 horizontal position on canvas
+     * @param int y                 vertical position on canvas
+     * @param string text           a string to be drawn
+     * @param string font           font family and size, ex. "1em Times New Roman"
+     * @param string colour         text colour in hash or rgba
+     * @param string baseline       canvas text baseline (top, middle or bottom)
+     * @param string align          canvas text align (right, center or left)
+     */
+    drawText : function(x, y, text, font, colour, baseline, align) {
+        var ctx = HandReplay.Facade.data.context;
+
+        ctx.beginPath();
+        ctx.font = font;
+        ctx.textBaseline = baseline;
+        ctx.textAlign = align;
+        ctx.fillStyle = colour;
+        ctx.fillText(text, x, y);
+    },
+
+    /**
+     * Set a shadow
+     * @param int ox                Horizontal offset
+     * @param int oy                Vertical offset
+     * @param int blur              Shadow blur
+     * @param string colour         Shadow style colour (hash)
+     */
+    drawShadow : function(ox, oy, blur, colour) {
+        var ctx = HandReplay.Facade.data.context;
+
+        ctx.shadowOffsetX = ox;
+        ctx.shadowOffsetY = oy;
+        ctx.shadowBlur = blur;
+        ctx.shadowColor = colour;
     }
 };
