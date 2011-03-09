@@ -34,7 +34,8 @@ HandReplay.Table =  {
         canvasH = HandReplay.Facade.data.canvasH,
         helpers = HandReplay.CanvasHelpers;
 
-        helpers.drawOval(canvasW/2, canvasH/2, 650, 350, 'rgba(47, 47, 46, 1)', 20, 'rgba(70, 99, 13, 0.8)');
+        helpers.drawOvalParam(canvasW/2, canvasH/2, 650, 350, 'rgba(47, 47, 46, 1)', 20, 'rgba(70, 99, 13, 0.8)');
+        helpers.drawChairs(6, 0, canvasW/2, canvasH/2, 750, 450, 'rgba(200, 0, 0, 1)', 10);
 
         HandReplay.Cards.create("Ad", 5, 5);
 

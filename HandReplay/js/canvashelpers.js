@@ -98,6 +98,99 @@ HandReplay.CanvasHelpers = {
         }
     },
 
+     /**
+     * Draw an oval shape -- parametric style
+      *@author ForestierSimon
+     * @param int cx            oval centre horizontal coordinate
+     * @param int cy            oval centre vertical coordinate
+     * @param int width         shape width
+     * @param int height        shape height
+     * @param string stroke     optional stroke style (rgba or hash)
+     * @param int strokesize    optional stroke size
+     * @param string fill       optional fill style (rgba or hash); fill will not be applied if undefined
+     */
+    drawOvalParam : function(cx, cy, width, height, stroke, strokesize, fill) {
+        var ctx = HandReplay.Facade.data.context;
+        var alpha, a, b, x, y, twoPi, steps;
+
+        ctx.beginPath();
+        ctx.moveTo(cx + width / 2, cy);
+
+        a = width / 2;
+        b = height / 2;
+        twoPi = Math.PI *2;
+        steps = 360;
+
+
+        for(alpha = 0; alpha <= steps; ++alpha) {
+            x = a * Math.cos(twoPi * alpha / steps);
+            y = b * Math.sin(twoPi * alpha / steps);
+            ctx.lineTo(cx + x, cy + y);
+        }
+
+        if (typeof strokesize !== 'undefined') {
+            ctx.lineWidth = strokesize;
+        }
+
+        if (typeof stroke !== 'undefined') {
+            ctx.strokeStyle = stroke;
+        }
+        ctx.stroke();
+
+        if (typeof fill !== 'undefined') {
+            ctx.fillStyle = fill;
+            ctx.fill();
+        }
+    },
+    /**
+     * Puts n chairs regularly on the given elipse-- parametric style
+      *@author ForestierSimon
+     * @param int chairsAmount  number of chairs to be put
+     * @param float  startAngle angle offset (in radians) used to set the first point position
+     * @param int cx            oval centre horizontal coordinate
+     * @param int cy            oval centre vertical coordinate
+     * @param int width         shape width
+     * @param int height        shape height
+     * @param string stroke     optional stroke style (rgba or hash)
+     * @param int strokesize    optional stroke size
+     * @param string fill       optional fill style (rgba or hash); fill will not be applied if undefined
+     */
+    drawChairs : function(chairsAmount, startAngle, cx, cy, width, height, stroke, strokesize, fill) {
+        var ctx = HandReplay.Facade.data.context;
+        var i, a, b, x, y, twoPi, ang;
+
+        a = width / 2;
+        b = height / 2;
+        twoPi = Math.PI *2;
+
+        ctx.beginPath();
+        ctx.moveTo(cx + width / 2, cy);
+
+        for(i = 0; i <= chairsAmount; ++i) {
+            ang = startAngle + twoPi * i / chairsAmount;
+            x = a * Math.cos( ang );
+            y = b * Math.sin( ang );
+            ctx.moveTo(cx + x - 15, cy + y);
+            ctx.lineTo(cx + x + 15, cy + y );
+            ctx.moveTo(cx + x, cy + y + 15);
+            ctx.lineTo(cx + x, cy + y - 15);
+        }
+
+        if (typeof strokesize !== 'undefined') {
+            ctx.lineWidth = strokesize;
+        }
+
+        if (typeof stroke !== 'undefined') {
+            ctx.strokeStyle = stroke;
+        }
+        ctx.stroke();
+
+        if (typeof fill !== 'undefined') {
+            ctx.fillStyle = fill;
+            ctx.fill();
+        }
+
+    },
     /**
      * Draw a text shape
      *
